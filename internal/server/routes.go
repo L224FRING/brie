@@ -8,6 +8,9 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
+
+	"github.com/golang-jwt/jwt/v5"
+	"brie/internal/auth"
 )
 
 func (s *Server) RegisterRoutes() http.Handler {
@@ -26,8 +29,36 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 	r.Get("/health", s.healthHandler)
 
+    r.Post("/auth/sign-in",s.CreateUser)
+    r.Post("/auth/log-in",s.LoginUser)
+    // routes in which u need to be authenticated
+    r.Group(func(pr chi.Router) {
+        pr.Use(auth.JWTMiddleware)
+        pr.Get("/protected",s.ProtectedHello)
+    })
+    
 	return r
 }
+
+type Credentials struct {
+    Username string `json:"username"`
+    Password string `json:"password"`
+}
+
+
+func (s *Server) ProtectedHello(w http.ResponseWriter, r *http.Request) {
+    claims, ok := r.Context().Value(auth.ClaimsContextKey).(jwt.MapClaims)
+    if !ok {
+        http.Error(w, "Failed to get claims", http.StatusUnauthorized)
+        return
+    }
+
+    userID := claims["user_id"].(string)
+    username := claims["username"].(string)
+
+    w.Write([]byte("Hello " + username + "! Your ID is " + userID))
+}
+
 
 func (s *Server) HelloWorldHandler(w http.ResponseWriter, r *http.Request) {
 	resp := make(map[string]string)

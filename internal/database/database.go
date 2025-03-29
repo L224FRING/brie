@@ -11,6 +11,7 @@ import (
 
 	_ "github.com/joho/godotenv/autoload"
 	_ "github.com/mattn/go-sqlite3"
+    "github.com/google/uuid"
 )
 
 // Service represents a service that interacts with a database.
@@ -22,6 +23,10 @@ type Service interface {
 	// Close terminates the database connection.
 	// It returns an error if the connection cannot be closed.
 	Close() error
+
+    CreateUser(id uuid.UUID, username string, password string) error
+    VerifyUser(username string, password string) (bool,error)
+    GetUserID(username string) (uuid.UUID, error)
 }
 
 type service struct {
@@ -51,6 +56,7 @@ func New() Service {
 	}
 	return dbInstance
 }
+
 
 // Health checks the health of the database connection by pinging the database.
 // It returns a map with keys indicating various health statistics.
