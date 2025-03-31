@@ -31,12 +31,13 @@ func (s *Server) RegisterRoutes() http.Handler {
 
     r.Post("/auth/sign-in",s.CreateUser)
     r.Post("/auth/log-in",s.LoginUser)
-    // routes in which u need to be authenticated
+
+    // routes in which u need to be authenticated pr-protected router
     r.Group(func(pr chi.Router) {
         pr.Use(auth.JWTMiddleware)
         pr.Get("/protected",s.ProtectedHello)
     })
-    
+
 	return r
 }
 

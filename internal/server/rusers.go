@@ -9,6 +9,8 @@ import (
 	"brie/internal/auth"
 )
 
+
+
 // TODO abstract this shit
 func (s *Server) LoginUser(w http.ResponseWriter, r *http.Request){
     // Getting Sign In Credentials 
@@ -110,4 +112,23 @@ func (s *Server) CreateUser(w http.ResponseWriter,r *http.Request){
     json.NewEncoder(w).Encode(jsonResponse)
 }
 
+func (s *Server) LogoutUser(w http.ResponseWriter, r *http.Request){
 
+    http.SetCookie(w,&http.Cookie{
+        Name: "jwt_token",
+        Value: "",
+        Expires: time.Now().Add(-time.Hour),
+        HttpOnly: true,
+        Secure: true,
+        SameSite: http.SameSiteLaxMode,
+        Path: "/",
+    })
+
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(http.StatusOK)
+
+    jsonResponse := map[string]string{
+        "message": "User Logged Out successfully",
+    }
+    json.NewEncoder(w).Encode(jsonResponse)
+}
