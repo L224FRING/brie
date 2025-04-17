@@ -1,6 +1,10 @@
 # Project brie
 
-One Paragraph of project description goes here
+A Discord Clone i m working on
+
+## Important
+
+This Project is a work in progress and is hardly even done
 
 ## Getting Started
 
