@@ -4,11 +4,9 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
-
 	"github.com/golang-jwt/jwt/v5"
 	"brie/internal/auth"
 )
@@ -45,7 +43,6 @@ type Credentials struct {
     Username string `json:"username"`
     Password string `json:"password"`
 }
-
 
 func (s *Server) ProtectedHello(w http.ResponseWriter, r *http.Request) {
     claims, ok := r.Context().Value(auth.ClaimsContextKey).(jwt.MapClaims)
