@@ -34,15 +34,12 @@ func (s *Server) RegisterRoutes() http.Handler {
     r.Group(func(pr chi.Router) {
         pr.Use(auth.JWTMiddleware)
         pr.Get("/protected",s.ProtectedHello)
+		pr.Post("/auth/log-out",s.LogoutUser)
     })
 
 	return r
 }
 
-type Credentials struct {
-    Username string `json:"username"`
-    Password string `json:"password"`
-}
 
 func (s *Server) ProtectedHello(w http.ResponseWriter, r *http.Request) {
     claims, ok := r.Context().Value(auth.ClaimsContextKey).(jwt.MapClaims)

@@ -10,6 +10,7 @@ import (
 )
 
 func (s *service) CreateUser(id uuid.UUID ,username string, password string ) error{
+
     hashed_password, err:=bcrypt.GenerateFromPassword([]byte(password),bcrypt.DefaultCost)
     if err!=nil{
         return err
@@ -21,6 +22,17 @@ func (s *service) CreateUser(id uuid.UUID ,username string, password string ) er
     return nil
 }
 
+func (s *service) ifUser(username string) (bool,error){
+    err:=s.db.QueryRow("SELECT * users WHERE username = ?",username).Scan()
+	if err!=nil{
+        if errors.Is(err,sql.ErrNoRows){
+            return false,nil
+        }
+		return false,err
+	}
+	return true,nil
+}
+	
 func (s *service) VerifyUser(username string, password string) (bool,error){
     var hashedPassword string
     err:=s.db.QueryRow("SELECT password FROM users WHERE username = ?",username).Scan(&hashedPassword)

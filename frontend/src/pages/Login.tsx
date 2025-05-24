@@ -1,3 +1,4 @@
+
 import { useState, ChangeEvent, FormEvent } from "react";
 import "./Signup.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,7 +8,7 @@ interface FormData {
   password: string;
 }
 
-const Signup = () => {
+const LogIn = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
     username: "",
@@ -24,7 +25,7 @@ const Signup = () => {
       e.preventDefault();
 
       try {
-          const response = await fetch("http://localhost/api/auth/sign-in", {
+          const response = await fetch("http://localhost/api/auth/log-in", {
               method: "POST",
               headers: {
                   "Content-Type": "application/json",
@@ -39,12 +40,12 @@ const Signup = () => {
               return;
           }
 
-          alert("Signup Successful!");
+          alert("Log in Successful!");
           navigate("/")
-          // Optionally, reset the form or redirect the user
+
       } catch (error) {
-          console.error("Error during signup:", error);
-          alert("An error occurred during signup. Please try again later.");
+          console.error("Error during login:", error);
+          alert(`An error occurred during login. ${error}`);
       }
   };
 
@@ -52,7 +53,7 @@ const Signup = () => {
   return (
     <div className="signup-container">
       <form className="signup-form" onSubmit={handleSubmit}>
-        <h2>Sign Up</h2>
+        <h2>Log in</h2>
 
         <label>Username</label>
         <input
@@ -72,15 +73,15 @@ const Signup = () => {
           required
         />
 
-        <button type="submit">Sign Up</button> 
+        <button type="submit">Log In</button>
         <div className="link">
-            already have and account <Link to="/login">Log In</Link>
+            Don't have an account? <Link to="/signup">Sign Up</Link>
         </div>
       </form>
     </div>
   );
 };
 
-export default Signup;
+export default LogIn;
 
 

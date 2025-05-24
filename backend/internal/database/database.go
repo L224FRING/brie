@@ -28,6 +28,7 @@ type Service interface {
     VerifyUser(username string, password string) (bool,error)
     GetUserID(username string) (uuid.UUID, error)
 	CreateMessage(sendername string, receivername string, message string) error
+	ifUser(username string) (bool,error)
 }
 
 type service struct {

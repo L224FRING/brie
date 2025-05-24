@@ -10,6 +10,10 @@ import (
 )
 
 
+type Credentials struct {
+    Username string `json:"username"`
+    Password string `json:"password"`
+}
 
 // TODO abstract this shit
 func (s *Server) LoginUser(w http.ResponseWriter, r *http.Request){
@@ -50,16 +54,16 @@ func (s *Server) LoginUser(w http.ResponseWriter, r *http.Request){
         Value: token,
         Expires: time.Now().Add(time.Hour*24*365),
         HttpOnly: true,
-        Secure: true,
+        Secure: false,
         SameSite: http.SameSiteLaxMode,
         Path: "/",
     })
 
     w.Header().Set("Content-Type", "application/json")
-    w.WriteHeader(http.StatusCreated)  // Use 201 for resource creation
+    w.WriteHeader(http.StatusOK) 
 
     jsonResponse := map[string]string{
-        "message": "User created successfully",
+        "message": "User Logged in successfully",
     }
     json.NewEncoder(w).Encode(jsonResponse)
 
