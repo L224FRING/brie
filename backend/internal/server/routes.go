@@ -26,7 +26,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r.Get("/", s.HelloWorldHandler)
 
 	r.Get("/health", s.healthHandler)
-
+	r.Get("/ws", s.WSHandler)
     r.Post("/auth/sign-in",s.CreateUser)
     r.Post("/auth/log-in",s.LoginUser)
 

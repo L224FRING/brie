@@ -15,7 +15,6 @@ type Credentials struct {
     Password string `json:"password"`
 }
 
-// TODO abstract this shit
 func (s *Server) LoginUser(w http.ResponseWriter, r *http.Request){
     // Getting Sign In Credentials 
     var creds Credentials
